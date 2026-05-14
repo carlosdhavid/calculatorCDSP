@@ -21,6 +21,12 @@ pipeline {
             }
         }
 
+        stage('JaCoCo Report') {
+            steps {
+                sh './gradlew jacocoTestReport'
+            }
+        }
+
     } // cierre de stages
 
 } // cierre de pipeline
