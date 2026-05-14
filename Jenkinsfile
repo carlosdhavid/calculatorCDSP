@@ -20,6 +20,8 @@ pipeline {
                 sh './gradlew test'
             }
         }
-    }
-}
+
+    } // ← cierre de stages
+
+} // ← cierre de pipeline
 }
