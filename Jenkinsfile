@@ -11,13 +11,15 @@ pipeline {
 
         stage('Compile') {
             steps {
-                sh '''
-                    echo "Compilando proyecto con Gradle..."
-                    chmod +x ./gradlew
-                    ./gradlew clean build
-                '''
+                sh './gradlew build'
             }
         }
 
+        stage('Test') {
+            steps {
+                sh './gradlew test'
+            }
+        }
     }
+}
 }
