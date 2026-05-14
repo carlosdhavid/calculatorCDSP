@@ -21,7 +21,6 @@ pipeline {
             }
         }
 
-    } // ← cierre de stages
+    } // cierre de stages
 
-} // ← cierre de pipeline
-}
+} // cierre de pipeline
