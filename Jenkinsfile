@@ -5,8 +5,7 @@ pipeline {
 
         stage('Checkout') {
             steps {
-                git branch: 'main',
-                    url: 'https://github.com/TU_USUARIO/TU_REPO.git'
+                git url: 'https://github.com/carlosdhavid/calculatorCDSP.git', branch: 'main'
             }
         }
 
@@ -28,4 +27,5 @@ pipeline {
         }
     }
 }
+
 
