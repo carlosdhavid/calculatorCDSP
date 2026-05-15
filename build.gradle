@@ -7,6 +7,14 @@ repositories {
     mavenCentral()
 }
 
+dependencies {
+    testImplementation 'org.junit.jupiter:junit-jupiter:5.10.0'
+}
+
+test {
+    useJUnitPlatform()
+}
+
 checkstyle {
     toolVersion = '10.12.4'
 }
@@ -19,5 +27,4 @@ tasks.withType(Checkstyle).configureEach {
         html.outputLocation = file("$buildDir/reports/checkstyle/main.html")
     }
 }
-
 
