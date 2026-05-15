@@ -5,13 +5,13 @@ pipeline {
 
         stage('Checkout') {
             steps {
-                git url: 'https://github.com/carlosdhavid/calculatorCDSP.git', branch: 'main'
+                checkout scm
             }
         }
 
         stage('Compile') {
             steps {
-                sh './gradlew build'
+                sh './gradlew clean compileJava'
             }
         }
 
@@ -25,8 +25,28 @@ pipeline {
             steps {
                 sh './gradlew jacocoTestReport'
             }
+            post {
+                always {
+                    jacoco execPattern: 'build/jacoco/test.exec',
+                           classPattern: 'build/classes/java/main',
+                           sourcePattern: 'src/main/java',
+                           inclusionPattern: '**/*.class',
+                           exclusionPattern: ''
+                }
+            }
         }
 
-    } // cierre de stages
-
-} // cierre de pipeline
+        stage('Checkstyle') {
+            steps {
+                sh './gradlew checkstyleMain checkstyleTest'
+            }
+            post {
+                always {
+                    recordIssues(
+                        tool: checkStyle(pattern: 'build/reports/checkstyle/*.xml')
+                    )
+                }
+            }
+        }
+    }
+}
