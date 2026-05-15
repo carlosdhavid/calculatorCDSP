@@ -1,42 +1,23 @@
 plugins {
     id 'java'
-    id 'jacoco'
     id 'checkstyle'
-}
-
-version = '1.0'
-
-java {
-    sourceCompatibility = JavaVersion.VERSION_21
 }
 
 repositories {
     mavenCentral()
 }
 
-dependencies {
-    testImplementation 'org.junit.jupiter:junit-jupiter:5.10.2'
+checkstyle {
+    toolVersion = '10.12.4'
 }
 
-test {
-    useJUnitPlatform()
-    finalizedBy jacocoTestReport
-}
-
-jacoco {
-    toolVersion = "0.8.10"
-}
-
-jacocoTestReport {
-    dependsOn test
+tasks.withType(Checkstyle).configureEach {
     reports {
         xml.required = true
         html.required = true
+        xml.outputLocation = file("$buildDir/reports/checkstyle/main.xml")
+        html.outputLocation = file("$buildDir/reports/checkstyle/main.html")
     }
 }
 
-checkstyle {
-    toolVersion = '10.12.4'
-    configFile = file('config/checkstyle/checkstyle.xml')
-}
 

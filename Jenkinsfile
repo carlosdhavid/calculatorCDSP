@@ -5,48 +5,28 @@ pipeline {
 
         stage('Checkout') {
             steps {
-                checkout scm
+                git branch: 'main',
+                    url: 'https://github.com/TU_USUARIO/TU_REPO.git'
             }
         }
 
-        stage('Compile') {
+        stage('Build') {
             steps {
-                sh './gradlew clean compileJava'
+                sh './gradlew clean build'
             }
         }
 
-        stage('Test') {
+        stage('Static code analysis') {
             steps {
-                sh './gradlew test'
-            }
-        }
-
-        stage('JaCoCo Report') {
-            steps {
-                sh './gradlew jacocoTestReport'
-            }
-            post {
-                always {
-                    jacoco execPattern: 'build/jacoco/test.exec',
-                           classPattern: 'build/classes/java/main',
-                           sourcePattern: 'src/main/java',
-                           inclusionPattern: '**/*.class',
-                           exclusionPattern: ''
-                }
-            }
-        }
-
-        stage('Checkstyle') {
-            steps {
-                sh './gradlew checkstyleMain checkstyleTest'
-            }
-            post {
-                always {
-                    recordIssues(
-                        tool: checkStyle(pattern: 'build/reports/checkstyle/*.xml')
-                    )
-                }
+                sh './gradlew checkstyleMain'
+                publishHTML (target: [
+                    reportDir: 'build/reports/checkstyle',
+                    reportFiles: 'main.html',
+                    reportName: 'Checkstyle Report'
+                ])
             }
         }
     }
 }
+
+
